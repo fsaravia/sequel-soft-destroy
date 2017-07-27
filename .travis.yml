@@ -1,0 +1,8 @@
+language: ruby
+
+script: ruby test/sequel/plugins/soft_destroy_test.rb
+
+before_install:
+  - gem install dep
+  - dep install
+  - dep install -f .gems-test
