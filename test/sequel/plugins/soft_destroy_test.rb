@@ -48,9 +48,19 @@ class SoftDestroyTest < Minitest::Test
     assert_equal [foo_1, foo_2], Foo.filter_deleted.where(Sequel.ilike(:name, "foo%")).all
   end
 
-  def test_fetch
+  def test_fetch_by_id
     foo = Foo.create(name: "foo 1").soft_destroy
 
     assert_nil Foo[foo.id]
+  end
+
+  def test_fetch_by_key
+    foo_1 = Foo.create(name: "foo").soft_destroy
+
+    assert_nil Foo[name: "foo"]
+
+    foo_2 = Foo.create(name: "foo")
+
+    assert_equal foo_2, Foo[name: "foo"]
   end
 end

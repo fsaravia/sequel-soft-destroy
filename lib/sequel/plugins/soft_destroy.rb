@@ -9,7 +9,13 @@ module Sequel
         Sequel::Plugins.def_dataset_methods(self, :filter_deleted)
 
         def [](*args)
-          model = super
+          args = args.first if args.size <= 1
+
+          return filter_deleted.first(args) if args.is_a?(Hash)
+
+          return if args.nil?
+
+          model = primary_key_lookup(args)
 
           return if model.nil? || model.deleted?
 
